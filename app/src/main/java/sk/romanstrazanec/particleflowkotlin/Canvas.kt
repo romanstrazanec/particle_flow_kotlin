@@ -18,9 +18,11 @@ class Canvas(viewContext: Context) : View(viewContext) {
         return size
     }
 
+    fun update() {}
+
     override fun onDraw(canvas: Canvas?) {
-        background(canvas)
-        invalidate()
+        this.background(canvas)
+        this.invalidate()
     }
 
     private fun background(canvas: Canvas?) {
