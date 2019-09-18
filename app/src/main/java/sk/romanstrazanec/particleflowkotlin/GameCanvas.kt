@@ -1,32 +1,63 @@
 package sk.romanstrazanec.particleflowkotlin
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Point
+import android.graphics.*
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import kotlin.math.abs
+import kotlin.random.Random
 
 class GameCanvas(viewContext: Context) : View(viewContext) {
     private val paint = Paint()
-    private val size = this.getWindowSize(viewContext)
+    private val size = getWindowSize(viewContext)
 
-    private fun getWindowSize(context: Context): Point {
+    private val attractionPoint = AttractionPoint(size.x / 2, size.y / 2)
+    private val particles: List<Particle> = Array(10000) {
+        Particle(rndWidth(), rndHeight(), Color.WHITE)
+    }.asList()
+
+    private fun getWindowSize(context: Context): PointF {
         val size = Point()
         (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(size)
-        return size
+        return PointF(size.x.toFloat(), size.y.toFloat())
     }
 
-    fun update() {}
-
     override fun onDraw(canvas: Canvas?) {
-        this.background(canvas)
-        this.invalidate()
+        background(canvas)
+
+        particles.forEach { particle ->
+            attractionPoint.attract(particle)
+
+            if (abs(particle.x - attractionPoint.x) < 1
+                && abs(particle.y - attractionPoint.y) < 1
+            )
+                particle.moveTo(rndWidth(), rndHeight())
+
+            particle.draw(canvas, paint)
+        }
+
+        invalidate()
+    }
+
+    override fun performClick(): Boolean {
+        super.performClick()
+        return true
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean = when (event?.action) {
+        MotionEvent.ACTION_DOWN -> {
+            attractionPoint.moveTo(event.x, event.y)
+            performClick()
+        }
+        else -> false
     }
 
     private fun background(canvas: Canvas?) {
         paint.color = Color.BLACK
-        canvas?.drawRect(0F, 0F, size.x.toFloat(), size.y.toFloat(), paint)
+        canvas?.drawRect(0F, 0F, size.x, size.y, paint)
     }
+
+    private fun rndWidth() = Random.nextFloat() * size.x
+    private fun rndHeight() = Random.nextFloat() * size.y
 }

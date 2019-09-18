@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     private fun createHandler() {
         updateHandler = @SuppressLint("HandlerLeak") object : Handler() {
             override fun handleMessage(msg: Message) {
-                gameCanvas?.update()
                 gameCanvas?.invalidate()
                 super.handleMessage(msg)
             }

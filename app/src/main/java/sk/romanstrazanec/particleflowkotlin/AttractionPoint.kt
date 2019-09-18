@@ -1,10 +1,13 @@
 package sk.romanstrazanec.particleflowkotlin
 
-import android.graphics.PointF
+class AttractionPoint(var x: Float, var y: Float) {
+    fun moveTo(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+    }
 
-class AttractionPoint(private val pos: PointF) {
-    fun moveTo(newPos: PointF) {
-        pos.x = newPos.x
-        pos.y = newPos.y
+    fun attract(p: Particle) {
+        p.x += x.compareTo(p.x)
+        p.y += y.compareTo(p.y)
     }
 }
