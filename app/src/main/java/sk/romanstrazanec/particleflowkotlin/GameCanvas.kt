@@ -8,7 +8,7 @@ import android.graphics.Point
 import android.view.View
 import android.view.WindowManager
 
-class Canvas(viewContext: Context) : View(viewContext) {
+class GameCanvas(viewContext: Context) : View(viewContext) {
     private val paint = Paint()
     private val size = this.getWindowSize(viewContext)
 

@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 
 class MainActivity : AppCompatActivity() {
-    private var gameCanvas: Canvas? = null
+    private var gameCanvas: GameCanvas? = null
     private var updateHandler: Handler? = null
     private var updateThread: UpdateThread? = null
 
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         requestedOrientation = SCREEN_ORIENTATION_LANDSCAPE
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
 
-        gameCanvas = Canvas(this)
+        gameCanvas = GameCanvas(this)
         createHandler()
         updateThread = UpdateThread(updateHandler)
 
