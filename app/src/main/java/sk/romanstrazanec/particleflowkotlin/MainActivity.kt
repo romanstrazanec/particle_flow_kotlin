@@ -9,15 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 
 class MainActivity : AppCompatActivity() {
-    private val gameCanvas = Canvas(this)
-    private val updateHandler = @SuppressLint("HandlerLeak") object : Handler() {
-        override fun handleMessage(msg: Message) {
-            gameCanvas.update()
-            gameCanvas.invalidate()
-            super.handleMessage(msg)
-        }
-    }
-    private val updateThread = UpdateThread(updateHandler)
+    private var gameCanvas: Canvas? = null
+    private var updateHandler: Handler? = null
+    private var updateThread: UpdateThread? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +20,21 @@ class MainActivity : AppCompatActivity() {
         requestedOrientation = SCREEN_ORIENTATION_LANDSCAPE
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
 
+        gameCanvas = Canvas(this)
+        createHandler()
+        updateThread = UpdateThread(updateHandler)
+
         setContentView(gameCanvas)
-        updateThread.start()
+        updateThread?.start()
+    }
+
+    private fun createHandler() {
+        updateHandler = @SuppressLint("HandlerLeak") object : Handler() {
+            override fun handleMessage(msg: Message) {
+                gameCanvas?.update()
+                gameCanvas?.invalidate()
+                super.handleMessage(msg)
+            }
+        }
     }
 }
