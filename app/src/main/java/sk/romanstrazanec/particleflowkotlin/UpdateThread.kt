@@ -2,7 +2,7 @@ package sk.romanstrazanec.particleflowkotlin
 
 import android.os.Handler
 
-class UpdateThread(private var updatingHandler: Handler) : Thread() {
+class UpdateThread(private val updatingHandler: Handler) : Thread() {
     override fun run() {
         while (true) {
             try {

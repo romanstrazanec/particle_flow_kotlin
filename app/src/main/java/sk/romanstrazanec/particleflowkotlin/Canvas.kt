@@ -9,8 +9,8 @@ import android.view.View
 import android.view.WindowManager
 
 class Canvas(viewContext: Context) : View(viewContext) {
-    private var paint = Paint()
-    private var size = this.getWindowSize(viewContext)
+    private val paint = Paint()
+    private val size = this.getWindowSize(viewContext)
 
     private fun getWindowSize(context: Context): Point {
         val size = Point()
