@@ -14,8 +14,8 @@ class AttractionPoint(var x: Float, var y: Float) {
         return sqrt(dx * dx + dy * dy)
     }
 
-    fun attract(p: Particle, attractionSpeed: Float) {
-        val f = attractionSpeed / (distance(p) + 1)
+    fun attract(p: Particle, attractionSpeed: Int) {
+        val f = attractionSpeed.toFloat() / (distance(p) + 1)
         p.x += f * (x - p.x)
         p.y += f * (y - p.y)
     }

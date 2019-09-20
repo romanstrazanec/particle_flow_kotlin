@@ -15,6 +15,9 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
     private val attractionPoint = AttractionPoint(size.x / 2, size.y / 2)
     private lateinit var particles: List<Particle>
 
+    private val attractionSpeed: Int = 10
+    private val drag: Int = 1
+
     private fun getWindowSize(context: Context): PointF {
         val size = Point()
         (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(size)
@@ -30,12 +33,12 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
 
         val tolerance = particles[0].r * 2.1f
         particles.forEach { particle ->
-            attractionPoint.attract(particle, 10f)
+            attractionPoint.attract(particle, attractionSpeed)
 
             if (abs(particle.x - attractionPoint.x) < tolerance
                 && abs(particle.y - attractionPoint.y) < tolerance
             )
-                particle.moveTo(rndWidth(), rndHeight())
+                disperseParticle(particle)
 
             particle.draw(canvas, paint)
         }
@@ -59,6 +62,13 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
     private fun background(canvas: Canvas?) {
         paint.color = Color.BLACK
         canvas?.drawRect(0f, 0f, size.x, size.y, paint)
+    }
+
+    private fun disperseParticle(p: Particle) {
+        p.moveTo(
+            (Random.nextFloat() * 2f - 1f) * drag + attractionPoint.x,
+            (Random.nextFloat() * 2f - 1f) * drag + attractionPoint.y
+        )
     }
 
     private fun rndWidth() = Random.nextFloat() * size.x
