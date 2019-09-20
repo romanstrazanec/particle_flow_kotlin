@@ -27,7 +27,7 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
         background(canvas)
 
         particles.forEach { particle ->
-            attractionPoint.attract(particle)
+            attractionPoint.attract(particle, size.x / 2F)
 
             if (abs(particle.x - attractionPoint.x) < 1
                 && abs(particle.y - attractionPoint.y) < 1

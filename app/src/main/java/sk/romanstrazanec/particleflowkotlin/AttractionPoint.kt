@@ -14,9 +14,9 @@ class AttractionPoint(var x: Float, var y: Float) {
         return sqrt(dx * dx + dy * dy)
     }
 
-    fun attract(p: Particle, f: Float = 250F) {
-        val d = distance(p)
-        p.x += f * x.compareTo(p.x) / d
-        p.y += f * y.compareTo(p.y) / d
+    fun attract(p: Particle, attractionFactor: Float) {
+        val f = attractionFactor / (distance(p) + 1)
+        p.x += f * x.compareTo(p.x)
+        p.y += f * y.compareTo(p.y)
     }
 }
