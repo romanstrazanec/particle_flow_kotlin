@@ -22,17 +22,18 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
     }
 
     fun createParticles(amount: Int) {
-        particles = Array(amount) { Particle(rndWidth(), rndHeight(), Color.WHITE) }.asList()
+        particles = Array(amount) { Particle(rndWidth(), rndHeight(), 1f, Color.WHITE) }.asList()
     }
 
     override fun onDraw(canvas: Canvas?) {
         background(canvas)
 
+        val tolerance = particles[0].r * 2.1f
         particles.forEach { particle ->
-            attractionPoint.attract(particle, size.x / 8F)
+            attractionPoint.attract(particle, 10f)
 
-            if (abs(particle.x - attractionPoint.x) < 1
-                && abs(particle.y - attractionPoint.y) < 1
+            if (abs(particle.x - attractionPoint.x) < tolerance
+                && abs(particle.y - attractionPoint.y) < tolerance
             )
                 particle.moveTo(rndWidth(), rndHeight())
 
@@ -57,7 +58,7 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
 
     private fun background(canvas: Canvas?) {
         paint.color = Color.BLACK
-        canvas?.drawRect(0F, 0F, size.x, size.y, paint)
+        canvas?.drawRect(0f, 0f, size.x, size.y, paint)
     }
 
     private fun rndWidth() = Random.nextFloat() * size.x
