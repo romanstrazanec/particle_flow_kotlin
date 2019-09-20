@@ -9,9 +9,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 
 class MainActivity : AppCompatActivity() {
-    private var gameCanvas: GameCanvas? = null
-    private var updateHandler: Handler? = null
-    private var updateThread: UpdateThread? = null
+    private lateinit var gameCanvas: GameCanvas
+    private lateinit var updateHandler: Handler
+    private lateinit var updateThread: UpdateThread
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,17 +21,18 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
 
         gameCanvas = GameCanvas(this)
+        gameCanvas.createParticles(10000)
         createHandler()
         updateThread = UpdateThread(updateHandler)
 
         setContentView(gameCanvas)
-        updateThread?.start()
+        updateThread.start()
     }
 
     private fun createHandler() {
         updateHandler = @SuppressLint("HandlerLeak") object : Handler() {
             override fun handleMessage(msg: Message) {
-                gameCanvas?.invalidate()
+                gameCanvas.invalidate()
                 super.handleMessage(msg)
             }
         }

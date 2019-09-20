@@ -13,14 +13,16 @@ class GameCanvas(viewContext: Context) : View(viewContext) {
     private val size = getWindowSize(viewContext)
 
     private val attractionPoint = AttractionPoint(size.x / 2, size.y / 2)
-    private val particles: List<Particle> = Array(10000) {
-        Particle(rndWidth(), rndHeight(), Color.WHITE)
-    }.asList()
+    private lateinit var particles: List<Particle>
 
     private fun getWindowSize(context: Context): PointF {
         val size = Point()
         (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getSize(size)
         return PointF(size.x.toFloat(), size.y.toFloat())
+    }
+
+    fun createParticles(amount: Int) {
+        particles = Array(amount) { Particle(rndWidth(), rndHeight(), Color.WHITE) }.asList()
     }
 
     override fun onDraw(canvas: Canvas?) {
