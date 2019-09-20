@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
 
         gameCanvas = GameCanvas(this)
-        gameCanvas.createParticles(10000)
+        gameCanvas.createParticles(500)
         createHandler()
         updateThread = UpdateThread(updateHandler)
 
